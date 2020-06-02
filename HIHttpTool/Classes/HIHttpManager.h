@@ -6,10 +6,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <AFNetworking/AFNetworking.h>
+#import "HIHttpToolConfig.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HIHttpManager : NSObject
+@interface HIHttpManager : AFHTTPSessionManager
 
 @end
 
