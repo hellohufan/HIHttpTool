@@ -1,0 +1,6 @@
+framework module Pods_HIHttpTool_Example {
+  umbrella header "Pods-HIHttpTool_Example-umbrella.h"
+
+  export *
+  module * { export * }
+}
