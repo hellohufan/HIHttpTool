@@ -50,10 +50,10 @@
 }
 
 // GET请求
-+ (void)GET:(nonnull NSString *)url
-     params:(nullable NSDictionary *)parameters
-    success:(nullable HIHTCallBackSuccess)success
-    failure:(nullable HIHTCallBackFail)failure {
++ (HIHttpManager *_Nonnull)GET:(nonnull NSString *)url
+                        params:(nullable NSDictionary *)parameters
+                       success:(nullable HIHTCallBackSuccess)success
+                       failure:(nullable HIHTCallBackFail)failure {
     HIHT_Log(@"url.lendth = %lu", (unsigned long)url.length);
     NSAssert(url.length > 0, @"URL Can Not Be Empty");
     HIHttpManager *manager = [HIHttpManager manager];
@@ -69,15 +69,21 @@
             [HIHttpTool failure:failure error:error task:task];
         }
     }];
+    return manager;
 }
 
 // 下载文件
-+ (void)downFile:(NSString *)url progress:(HIHTCallBackProgress)progress success:(HIHTCallBackURL)success failure:(HIHTCallBackFail)failure {
++ (HIHttpManager *_Nonnull)downFile:(NSString *)url
+                           progress:(HIHTCallBackProgress)progress
+                            success:(HIHTCallBackURL)success
+                            failure:(HIHTCallBackFail)failure {
     NSAssert(url.length > 0, @"URL Can Not Be Empty");
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
-    if (!request) return;
     HIHttpManager *manager = [HIHttpManager manager];
+    if (!request){
+        return manager;
+    }
     NSURLSessionDownloadTask *task = [manager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
         if (progress){
             HIHT_GCD_MAIN(^{
@@ -108,10 +114,11 @@
         }
     }];
     [task resume];
+    return manager;
 }
 
 // 上传图片
-+ (void)uploadPhoto:(NSString*)url
++ (HIHttpManager *_Nonnull)uploadPhoto:(NSString*)url
             params:(NSDictionary *)params
              image:(UIImage*)image
                key:(NSString*)key
@@ -142,6 +149,7 @@
             [HIHttpTool failure:failure error:error task:task];
         }
     }];
+    return manager;
 }
 
 // 网络检测

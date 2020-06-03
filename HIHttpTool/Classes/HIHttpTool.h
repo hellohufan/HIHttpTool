@@ -59,10 +59,10 @@ POST网络请求
 @param failure 返回失败回调
 
 */
-+ (HIHttpManager *)POST:(nonnull NSString *)url
-      params:(nullable NSDictionary *)parameters
-     success:(nullable HIHTCallBackSuccess)success
-     failure:(nullable HIHTCallBackFail)failure;
++ (HIHttpManager *_Nonnull)POST:(nonnull NSString *)url
+                         params:(nullable NSDictionary *)parameters
+                        success:(nullable HIHTCallBackSuccess)success
+                        failure:(nullable HIHTCallBackFail)failure;
 
 /**
 GET网络请求
@@ -73,10 +73,10 @@ GET网络请求
 @param failure 返回失败回调
 
 */
-+ (HIHttpManager *)GET:(nonnull NSString *)url
-     params:(nullable NSDictionary *)parameters
-    success:(nullable HIHTCallBackSuccess)success
-    failure:(nullable HIHTCallBackFail)failure;
++ (HIHttpManager *_Nonnull)GET:(nonnull NSString *)url
+                        params:(nullable NSDictionary *)parameters
+                       success:(nullable HIHTCallBackSuccess)success
+                       failure:(nullable HIHTCallBackFail)failure;
 
 /**
 下载网络文件
@@ -87,10 +87,10 @@ GET网络请求
 @param failure 返回失败回调
 
 */
-+ (void)downFile:(nonnull NSString *)url
-        progress:(nullable HIHTCallBackProgress)progress
-         success:(HIHTCallBackURL _Nullable )success
-         failure:( HIHTCallBackFail _Nullable )failure;
++ (HIHttpManager *_Nonnull)downFile:(nonnull NSString *)url
+                           progress:(nullable HIHTCallBackProgress)progress
+                            success:(HIHTCallBackURL _Nullable )success
+                            failure:( HIHTCallBackFail _Nullable )failure;
 
 /**
 上传图片
@@ -104,13 +104,13 @@ GET网络请求
 @param failure 返回失败回调
 
 */
-+ (void)uploadPhoto:(nonnull NSString*)url
-             params:(nullable NSDictionary *)parameters
-              image:(nonnull UIImage*)image
-                key:(nonnull NSString*)key
-           progress:(HIHTCallBackProgress _Nullable)progress
-            success:(HIHTCallBackSuccess _Nullable)success
-            failure:(HIHTCallBackFail _Nullable)failure;
++ (HIHttpManager *_Nonnull)uploadPhoto:(nonnull NSString*)url
+                                params:(nullable NSDictionary *)parameters
+                                 image:(nonnull UIImage*)image
+                                   key:(nonnull NSString*)key
+                              progress:(HIHTCallBackProgress _Nullable)progress
+                               success:(HIHTCallBackSuccess _Nullable)success
+                               failure:(HIHTCallBackFail _Nullable)failure;
 
 /**
 监视网络连接情况
