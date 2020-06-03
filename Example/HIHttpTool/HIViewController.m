@@ -13,6 +13,8 @@
 
 @interface HIViewController ()
 
+@property (nonatomic, strong) IBOutlet UITextView *textView;
+
 @end
 
 @implementation HIViewController
@@ -29,8 +31,10 @@
     NSDictionary *parameters = @{@"page": @"1", @"count": @"2", @"type": @"video"};
     [HIHttpTool GET:url params:parameters success:^(NSURLSessionDataTask * _Nonnull task, NSDictionary * _Nullable JSON) {
         HIHTLog(@"json = %@", JSON);
+        self.textView.text = [NSString stringWithFormat:@"GET JSON = \n%@\n%@", self.textView.text, JSON];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         HIHTLog(@"Error = %@", error);
+        self.textView.text = [NSString stringWithFormat:@"GET ERROR = \n%@\n%@", self.textView.text, error];
     }];
 }
 
@@ -39,8 +43,10 @@
     NSDictionary *parameter = @{};
     [HIHttpTool POST:url params:parameter success:^(NSURLSessionDataTask * _Nonnull task, NSDictionary * _Nullable JSON) {
         HIHTLog(@"JSON = %@", JSON);
+        self.textView.text = [NSString stringWithFormat:@"POST JSON = \n %@\n%@", self.textView.text, JSON];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         HIHTLog(@"error = %@", error);
+        self.textView.text = [NSString stringWithFormat:@"POST ERROR = \n %@\n%@", self.textView.text, error];
     }];
 }
 
