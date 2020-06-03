@@ -25,7 +25,7 @@ PODS:
   - FBSnapshotTestCase/SwiftSupport (2.1.4):
     - FBSnapshotTestCase/Core
   - HIHttpTool (0.1.0):
-    - AFNetworking (~> 3.2.1)
+    - AFNetworking
   - Specta (1.0.7)
 
 DEPENDENCIES:
@@ -52,7 +52,7 @@ SPEC CHECKSUMS:
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   "Expecta+Snapshots": dcff217eef506dabd6dfdc7864ea2da321fafbb8
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
-  HIHttpTool: 03e44fc327afe1cb898c57bfce4f8f54e0547068
+  HIHttpTool: 173305cabeaf554244b63d8f7cede9d935405431
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
 
 PODFILE CHECKSUM: 5e2083e2ac651ea48a836a418097e7ed0d97e2c0

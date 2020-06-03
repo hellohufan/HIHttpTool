@@ -9,7 +9,7 @@
 #import "HIViewController.h"
 #import "HIHttpTool.h"
 
-#define HDLog(FORMAT, ...) fprintf(stderr, "【%s】 %s ‖ 〖LINE:%li〗【MESSAGE】:\n%s\n", [[[NSString stringWithUTF8String: __FILE__] lastPathComponent] UTF8String], __PRETTY_FUNCTION__, (long)__LINE__, [[NSString stringWithFormat: FORMAT, ## __VA_ARGS__] UTF8String]);
+#define HIHTLog(FORMAT, ...) fprintf(stderr, "【%s】 %s ‖ 〖LINE:%li〗【MESSAGE】:\n%s\n", [[[NSString stringWithUTF8String: __FILE__] lastPathComponent] UTF8String], __PRETTY_FUNCTION__, (long)__LINE__, [[NSString stringWithFormat: FORMAT, ## __VA_ARGS__] UTF8String]);
 
 @interface HIViewController ()
 
@@ -20,16 +20,27 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self http];
+    [self httpGet];
+    [self httpPost];
 }
 
-- (void)http{
-    NSString *url = @"https://www.baifubao.com/";
-    NSDictionary *parameters = @{@"phone": @"18659152700", @"callback": @"phone", @"cmd": @"1059"};
+- (void)httpGet{
+    NSString *url = @"https://api.apiopen.top/getJoke";
+    NSDictionary *parameters = @{@"page": @"1", @"count": @"2", @"type": @"video"};
     [HIHttpTool GET:url params:parameters success:^(NSURLSessionDataTask * _Nonnull task, NSDictionary * _Nullable JSON) {
-        HDLog(@"json = %@", JSON);
+        HIHTLog(@"json = %@", JSON);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        HDLog(@"Error = %@", error);
+        HIHTLog(@"Error = %@", error);
+    }];
+}
+
+- (void)httpPost{
+    NSString *url = @"https://api.apiopen.top/getWangYiNews";
+    NSDictionary *parameter = @{};
+    [HIHttpTool POST:url params:parameter success:^(NSURLSessionDataTask * _Nonnull task, NSDictionary * _Nullable JSON) {
+        HIHTLog(@"JSON = %@", JSON);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        HIHTLog(@"error = %@", error);
     }];
 }
 
