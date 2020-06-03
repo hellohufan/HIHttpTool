@@ -22,8 +22,45 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self httpGet];
-    [self httpPost];
+    [self http];
+}
+
+- (void)http{
+    
+    dispatch_group_t group = dispatch_group_create();
+    dispatch_queue_t serialQueue = dispatch_queue_create("http", DISPATCH_QUEUE_SERIAL);
+    dispatch_group_enter(group);
+    dispatch_group_async(group, serialQueue, ^{
+         NSString *url = @"https://api.apiopen.top/getJoke";
+           NSDictionary *parameters = @{@"page": @"1", @"count": @"2", @"type": @"video"};
+           [HIHttpTool GET:url params:parameters success:^(NSURLSessionDataTask * _Nonnull task, NSDictionary * _Nullable JSON) {
+               HIHTLog(@"json = %@", JSON);
+               
+               dispatch_group_leave(group);
+           } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+               HIHTLog(@"Error = %@", error);
+               dispatch_group_leave(group);
+           }];
+    });
+    dispatch_group_enter(group);
+    dispatch_group_async(group, serialQueue, ^{
+        NSString *url = @"https://api.apiopen.top/getWangYiNews";
+        NSDictionary *parameter = @{};
+        [HIHttpTool POST:url params:parameter success:^(NSURLSessionDataTask * _Nonnull task, NSDictionary * _Nullable JSON) {
+            HIHTLog(@"JSON = %@", JSON);
+            dispatch_group_leave(group);
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            HIHTLog(@"error = %@", error);
+            dispatch_group_leave(group);
+        }];
+    });
+    dispatch_group_notify(group, serialQueue, ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+            });
+        });
+    });
 }
 
 - (void)httpGet{
