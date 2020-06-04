@@ -31,18 +31,20 @@
       params:(nullable NSDictionary *)parameters
      success:(nullable HIHTCallBackSuccess)success
      failure:(nullable HIHTCallBackFail)failure{
-    
     NSAssert(url.length > 0, @"URL Can Not Be Empty");
     HIHttpManager *manager = [HIHttpManager manager];
     manager.requestSerializer.timeoutInterval = [HIHttpTool timeoutInterval];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    HIHT_Log(@"HEAD = %@\nurl = %@\nParameters = %@", manager.requestSerializer.HTTPRequestHeaders, url, parameters);
     [manager POST:url parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if(success){
+            HIHT_Log(@"responseObject = %@", responseObject);
             [HIHttpTool success:success json:responseObject task:task];
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         if(failure){
+            HIHT_Log(@"URL = %@\nerror = %@", task.response.URL, error);
             [HIHttpTool failure:failure error:error task:task];
         }
     }];
@@ -54,18 +56,20 @@
                         params:(nullable NSDictionary *)parameters
                        success:(nullable HIHTCallBackSuccess)success
                        failure:(nullable HIHTCallBackFail)failure {
-    HIHT_Log(@"url.lendth = %lu", (unsigned long)url.length);
     NSAssert(url.length > 0, @"URL Can Not Be Empty");
     HIHttpManager *manager = [HIHttpManager manager];
     manager.requestSerializer.timeoutInterval = [HIHttpTool timeoutInterval];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    HIHT_Log(@"HEAD = %@\nurl = %@\nParameters = %@", manager.requestSerializer.HTTPRequestHeaders, url, parameters);
     [manager GET:url parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if(success){
+            HIHT_Log(@"responseObject = %@", responseObject);
             [HIHttpTool success:success json:responseObject task:task];
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         if(failure){
+            HIHT_Log(@"error = %@", error);
             [HIHttpTool failure:failure error:error task:task];
         }
     }];
@@ -84,6 +88,7 @@
     if (!request){
         return manager;
     }
+    HIHT_Log(@"HEAD = %@\nurl = %@\n", manager.requestSerializer.HTTPRequestHeaders, url);
     NSURLSessionDownloadTask *task = [manager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
         if (progress){
             HIHT_GCD_MAIN(^{
@@ -108,8 +113,12 @@
         return [NSURL fileURLWithPath:@""];
     } completionHandler:^(NSURLResponse * _Nonnull response, NSURL * _Nullable filePath, NSError * _Nullable error) {
         // 完成
-        if (error)[self failure:nil error:error task:nil];
+        if (error){
+            HIHT_Log(@"URL = %@\nerror = %@", url, error);
+            [self failure:nil error:error task:nil];
+        }
         if (success) {
+            HIHT_Log(@"SUCCESS filePath = %@", filePath);
             success(filePath);
         }
     }];
@@ -119,18 +128,18 @@
 
 // 上传图片
 + (HIHttpManager *_Nonnull)uploadPhoto:(NSString*)url
-            params:(NSDictionary *)params
-             image:(UIImage*)image
-               key:(NSString*)key
-          progress:(HIHTCallBackProgress)progress
-           success:(HIHTCallBackSuccess)success
-           failure:(HIHTCallBackFail)failure {
+                            parameters:(NSDictionary *)parameters
+                                 image:(UIImage*)image
+                                   key:(NSString*)key
+                              progress:(HIHTCallBackProgress)progress
+                               success:(HIHTCallBackSuccess)success
+                               failure:(HIHTCallBackFail)failure {
     NSAssert(url.length > 0, @"URL Can Not Be Empty");
     HIHttpManager *manager = [HIHttpManager manager];
     manager.requestSerializer.timeoutInterval = [HIHttpTool timeoutInterval];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
-
-    [manager POST:url parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+    HIHT_Log(@"HEAD = %@\nurl = %@\nparameters = %@", manager.requestSerializer.HTTPRequestHeaders, url, parameters);
+    [manager POST:url parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         NSString *fileName =[NSString stringWithFormat:@"Photo%@.png",[HIHttpTool rts]];
         NSString *type = @"image/png";
         [formData appendPartWithFileData:[HIHttpTool zipImage:image] name:key fileName:fileName mimeType:type];
@@ -142,10 +151,12 @@
         }
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if(success){
+            HIHT_Log(@"responseObject = %@", responseObject);
             [HIHttpTool success:success json:responseObject task:task];
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         if(failure){
+            HIHT_Log(@"error = %@", error);
             [HIHttpTool failure:failure error:error task:task];
         }
     }];

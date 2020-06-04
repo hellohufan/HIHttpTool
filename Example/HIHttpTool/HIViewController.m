@@ -34,11 +34,10 @@
          NSString *url = @"https://api.apiopen.top/getJoke";
            NSDictionary *parameters = @{@"page": @"1", @"count": @"2", @"type": @"video"};
            [HIHttpTool GET:url params:parameters success:^(NSURLSessionDataTask * _Nonnull task, NSDictionary * _Nullable JSON) {
-               HIHTLog(@"json = %@", JSON);
                
                dispatch_group_leave(group);
            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-               HIHTLog(@"Error = %@", error);
+               
                dispatch_group_leave(group);
            }];
     });
@@ -47,10 +46,10 @@
         NSString *url = @"https://api.apiopen.top/getWangYiNews";
         NSDictionary *parameter = @{};
         [HIHttpTool POST:url params:parameter success:^(NSURLSessionDataTask * _Nonnull task, NSDictionary * _Nullable JSON) {
-            HIHTLog(@"JSON = %@", JSON);
+//            HIHTLog(@"JSON = %@", JSON);
             dispatch_group_leave(group);
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-            HIHTLog(@"error = %@", error);
+//            HIHTLog(@"error = %@", error);
             dispatch_group_leave(group);
         }];
     });
