@@ -24,7 +24,7 @@ typedef void (^HIHTCallBackSuccess)(NSURLSessionDataTask * _Nonnull task, NSDict
 typedef void (^HIHTCallBackFail)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error);
 typedef void (^HIHTCallBackURL)(NSURL *_Nullable url);
 
-#define HIHT_Log(FORMAT, ...) fprintf(stderr, "\n====================================================================\n‖ 文件名称：%s \n‖ 方法名称:%s \n‖ LINE:%li \n‖【MESSAGE】:\n‖ %s\n====================================================================\n", [[[NSString stringWithUTF8String: __FILE__] lastPathComponent] UTF8String], __PRETTY_FUNCTION__, (long)__LINE__, [[NSString stringWithFormat: FORMAT, ## __VA_ARGS__] UTF8String]);
+#define HIHT_Log(FORMAT, ...) fprintf(stderr, "\n====================================================================\n‖ 文件名称：%s \n‖ 方法名称:%s \n‖ LINE:%li \n‖ MESSAGE:\n  %s\n====================================================================\n", [[[NSString stringWithUTF8String: __FILE__] lastPathComponent] UTF8String], __PRETTY_FUNCTION__, (long)__LINE__, [[NSString stringWithFormat: FORMAT, ## __VA_ARGS__] UTF8String]);
 
 #define HIHT_GCD_AFTER(sec,afterQueueBlock) dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(sec * NSEC_PER_SEC)), dispatch_get_main_queue(),afterQueueBlock);
 //GCD - 一次性
